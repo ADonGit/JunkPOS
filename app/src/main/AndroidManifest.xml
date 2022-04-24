@@ -10,6 +10,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JunkPOS">
         <activity
+            android:name=".HistoryDetailActivity"
+            android:exported="false"
+            android:parentActivityName=".HistoryActivity"
+            />
+        <activity
+            android:name=".RestockActivity"
+            android:exported="false"
+            android:parentActivityName=".ManagerActivity" />
+        <activity
+            android:name=".HistoryActivity"
+            android:exported="false"
+            android:parentActivityName=".ManagerActivity" />
+        <activity
+            android:name=".ManagerActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

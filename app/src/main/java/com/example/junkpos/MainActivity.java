@@ -3,6 +3,7 @@ package com.example.junkpos;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,7 +14,12 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -26,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     ArrayList<Catalogue> itList = new ArrayList<>();
     ArrayList<String> sList = new ArrayList<>();
+    ArrayList<PurchaseHistory> pHistory;
 
     ArrayAdapter<String> catalogueAdapter;
 
@@ -37,6 +44,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        pHistory = new ArrayList<>();
 
         buyButton = findViewById(R.id.buyButton);
         buyButton.setOnClickListener(this);
@@ -80,10 +90,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 quantityNum.setText(String.valueOf((numberPicker.getValue())));
                 if (!itList.isEmpty() && currSel >= 0) {
                     totalNum.setText(
-                            String.valueOf("$" + String.format("%.2f", (itList.get(currSel).itemPrice * quantityPicker.getValue())))
+                            String.valueOf(getTotal())
                     );
                 }
-
             }
         });
 
@@ -95,14 +104,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 currSel = i;
                 productType.setText(itList.get(currSel).itemName.toString());
 
-                //Make this a function vvvvvv
-                totalNum.setText(
-                        "$" + String.format("%.2f", (itList.get(currSel).itemPrice * quantityPicker.getValue()))
-                );
+                totalNum.setText(getTotal());
+            }
+        });
+
+        managerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openManager();
             }
         });
 
     }
+
 
     @Override
     public void onClick(View view) {
@@ -120,10 +134,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else if (currSel >= 0) {
                     itList.get(currSel).quantityAvailable -= quantityPicker.getValue();
 
-                    //Make this a function vvvvvv
-                    sList.set(currSel, (String.format("%-14s %14s %14s", (itList.get(currSel).itemName), ("$" + itList.get(currSel).itemPrice), ("Qty: " + itList.get(currSel).quantityAvailable))));
+                    //Here we add to the history
+                    PurchaseHistory tempHistory = new PurchaseHistory();
+                    tempHistory.addItemName(itList.get(currSel).itemName);
+                    tempHistory.addQuantity(quantityPicker.getValue());
+                    tempHistory.addTotal(itList.get(currSel).itemPrice * quantityPicker.getValue());
+
+                    //Getting the current date
+                    tempHistory.addPurchaseDate(getDate());
+                    pHistory.add(tempHistory);
+
+                    sList.set(currSel, (String.format("%-14s %14s %14s",
+                            (itList.get(currSel).itemName),
+                            ("$" + itList.get(currSel).itemPrice),
+                            ("Qty: " + itList.get(currSel).quantityAvailable))));
 
                     catalogueAdapter.notifyDataSetChanged();
+
 
                     builder.setTitle("Thank you for your purchase");
                     builder.setMessage("Purchase of " + quantityPicker.getValue() + " " + itList.get(currSel).itemName);
@@ -135,5 +162,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
         }
+    }
+
+    String getDate() {
+        Date cal = Calendar.getInstance().getTime();
+
+        SimpleDateFormat df = new SimpleDateFormat("MMM/dd/yyyy", Locale.getDefault());
+        String formattedDate = df.format(cal);
+        return formattedDate;
+    }
+
+    public void openManager() {
+        Intent intent = new Intent(this, ManagerActivity.class);
+        //intent.putSerializable("history", pHistory);
+        //((MyApp)getApplication()).hManager.pHis
+        intent.putParcelableArrayListExtra("history", pHistory);
+        intent.putParcelableArrayListExtra("catalogList", itList);
+
+        //intent.putExtra("history", pHistory);
+        startActivityForResult(intent, 1);
+        //registerForActivityResult(intent, new );
+    }
+
+    String getTotal() {
+        return ("$" + String.format("%.2f", (itList.get(currSel).itemPrice * quantityPicker.getValue())));
     }
 }

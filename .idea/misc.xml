@@ -4,7 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Des/AndroidStudioProjects/JunkPOS/app/src/main/res/layout-ldltr/item_row_layout.xml" value="0.3671875" />
+        <entry key="..\:/Users/Des/AndroidStudioProjects/JunkPOS/app/src/main/res/layout/activity_history.xml" value="0.3671875" />
+        <entry key="..\:/Users/Des/AndroidStudioProjects/JunkPOS/app/src/main/res/layout/activity_history_detail.xml" value="0.353125" />
         <entry key="..\:/Users/Des/AndroidStudioProjects/JunkPOS/app/src/main/res/layout/activity_main.xml" value="0.296195652173913" />
+        <entry key="..\:/Users/Des/AndroidStudioProjects/JunkPOS/app/src/main/res/layout/activity_manager.xml" value="0.20572916666666666" />
+        <entry key="..\:/Users/Des/AndroidStudioProjects/JunkPOS/app/src/main/res/layout/activity_restock.xml" value="0.3671875" />
         <entry key="..\:/Users/Des/AndroidStudioProjects/JunkPOS/app/src/main/res/layout/item_row_layout.xml" value="0.3671875" />
       </map>
     </option>

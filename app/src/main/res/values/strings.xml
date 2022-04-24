@@ -2,4 +2,9 @@
     <string name="app_name">JunkPOS</string>
     <string name="buy">Buy</string>
     <string name="manager">Manager</string>
+    <string name="history">History</string>
+    <string name="restock">Restock</string>
+    <string name="enter_quantity">Enter Quantity</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 </resources>
